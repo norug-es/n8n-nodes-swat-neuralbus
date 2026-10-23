@@ -1,0 +1,81 @@
+{
+  "name": "SWAT NeuralBus - Bitcoin Analysis and Forensic Graph (Staging)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "0fc00188-ce3a-479f-a089-4f45e90b3461",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 280]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d79e5cce-f7ba-42d1-92cb-d32198bbb75e",
+              "name": "address",
+              "value": "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fb2f8581-68cc-489c-b20a-16cf76f10cf2",
+      "name": "Input Address",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [460, 280]
+    },
+    {
+      "parameters": {
+        "resource": "blockchain",
+        "operation": "analyze",
+        "chain": "bitcoin",
+        "entityType": "wallet",
+        "value": "={{$json.address}}",
+        "network": "mainnet",
+        "executeSensors": false,
+        "query": ""
+      },
+      "id": "24c45775-e0b2-42d2-ab3d-c0ecde18144b",
+      "name": "Analyze Wallet",
+      "type": "n8n-nodes-swat-neuralbus.swatNeuralBus",
+      "typeVersion": 1,
+      "position": [690, 280]
+    },
+    {
+      "parameters": {
+        "resource": "graph",
+        "operation": "create",
+        "chain": "bitcoin",
+        "entityType": "wallet",
+        "value": "={{$('Input Address').item.json.address}}",
+        "executeSensors": false,
+        "sourceCaseId": "={{$json.case_id}}",
+        "title": "SWAT n8n demo - Bitcoin wallet",
+        "depth": 2,
+        "maxNodes": 120,
+        "mode": "fund-flow",
+        "style": "swat-dark",
+        "includeRisk": true
+      },
+      "id": "7a6998d0-3ef1-4c26-be8e-c3faafbb83f9",
+      "name": "Generate Forensic Graph",
+      "type": "n8n-nodes-swat-neuralbus.swatNeuralBus",
+      "typeVersion": 1,
+      "position": [920, 280]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": { "main": [[{ "node": "Input Address", "type": "main", "index": 0 }]] },
+    "Input Address": { "main": [[{ "node": "Analyze Wallet", "type": "main", "index": 0 }]] },
+    "Analyze Wallet": { "main": [[{ "node": "Generate Forensic Graph", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "tags": []
+}

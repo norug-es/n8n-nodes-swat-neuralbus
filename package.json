@@ -1,0 +1,56 @@
+{
+  "name": "n8n-nodes-swat-neuralbus",
+  "version": "0.1.0",
+  "description": "SWAT NeuralBus blockchain investigations, evidence and forensic graphs for n8n",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "n8n-community-node-package",
+    "blockchain",
+    "bitcoin",
+    "forensics",
+    "swat",
+    "neuralbus"
+  ],
+  "author": {
+    "name": "NORUG / SWAT",
+    "email": "294119171+norug-es@users.noreply.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/norug-es/n8n-nodes-swat-neuralbus.git"
+  },
+  "homepage": "https://neuralbus.norug.es",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "build": "n8n-node build",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "check:static": "node --test tests/*.test.cjs",
+    "test": "npm run check:static"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/SwatNeuralBusApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/SwatNeuralBus/SwatNeuralBus.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@n8n/node-cli": "0.52.5",
+    "typescript": "^5.9.3",
+    "eslint": "^9.39.4"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

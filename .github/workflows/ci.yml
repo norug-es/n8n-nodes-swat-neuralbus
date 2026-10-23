@@ -1,0 +1,22 @@
+name: Verify n8n node (source)
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.0'
+      - name: Install dependencies
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Unit contract tests (mock backend)
+        run: npm test
+      - name: Static lint
+        run: npm run lint
+      - name: Build package
+        run: npm run build
