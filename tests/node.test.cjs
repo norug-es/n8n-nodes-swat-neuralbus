@@ -14,6 +14,7 @@ const js = ts.transpileModule(fs.readFileSync(source, 'utf8'), {
 }).outputText;
 const stubWorkflow = {
   NodeConnectionTypes: { Main: 'main' },
+  UnexpectedError: class UnexpectedError extends Error {},
   NodeOperationError: class NodeOperationError extends Error {
     constructor(_node, message, ctx) { super(message); this.context = ctx; }
   },

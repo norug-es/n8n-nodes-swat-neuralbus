@@ -6,7 +6,7 @@ import type {
   INodeTypeDescription,
   IHttpRequestOptions,
 } from 'n8n-workflow';
-import { NodeConnectionTypes, NodeOperationError } from 'n8n-workflow';
+import { NodeConnectionTypes, NodeOperationError, UnexpectedError } from 'n8n-workflow';
 
 const show = (resource: string, operation: string) => ({
   show: { resource: [resource], operation: [operation] },
@@ -15,7 +15,7 @@ const show = (resource: string, operation: string) => ({
 function encodedId(value: string, label: string): string {
   const cleaned = value.trim();
   if (!cleaned || cleaned === 'undefined' || cleaned === 'null') {
-    throw new Error(`${label} is required`);
+    throw new UnexpectedError(`${label} is required`);
   }
   return encodeURIComponent(cleaned);
 }
@@ -25,10 +25,10 @@ export function safeBaseUrl(value: string): string {
   const parsed = new URL(normalized);
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(parsed.hostname);
   if (parsed.protocol !== 'https:' && !(parsed.protocol === 'http:' && local)) {
-    throw new Error('NeuralBus Base URL must use HTTPS (except localhost during development)');
+    throw new UnexpectedError('NeuralBus Base URL must use HTTPS (except localhost during development)');
   }
   if (parsed.username || parsed.password || parsed.search || parsed.hash || parsed.pathname !== '/') {
-    throw new Error('NeuralBus Base URL must be only the origin, without a path, query or credentials');
+    throw new UnexpectedError('NeuralBus Base URL must be only the origin, without a path, query or credentials');
   }
   return parsed.origin;
 }
@@ -37,7 +37,7 @@ export class SwatNeuralBus implements INodeType {
   description: INodeTypeDescription = {
     displayName: 'SWAT NeuralBus',
     name: 'swatNeuralBus',
-    icon: 'file:swat.svg',
+    icon: { light: 'file:swat.svg', dark: 'file:swat.svg' },
     group: ['transform'],
     version: 1,
     subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
@@ -65,7 +65,7 @@ export class SwatNeuralBus implements INodeType {
         displayName: 'Operation', name: 'operation', type: 'options',
         noDataExpression: true, displayOptions: { show: { resource: ['account'] } },
         options: [
-          { name: 'Get Profile', value: 'profile', action: 'Get my NeuralBus profile' },
+          { name: 'Get Profile', value: 'profile', action: 'Get my neural bus profile' },
         ], default: 'profile',
       },
       {
@@ -105,18 +105,18 @@ export class SwatNeuralBus implements INodeType {
       {
         displayName: 'Entity Type', name: 'entityType', type: 'options', default: 'wallet',
         options: [
-          { name: 'Wallet', value: 'wallet' },
           { name: 'Address', value: 'address' },
-          { name: 'Transaction', value: 'transaction' },
-          { name: 'Token', value: 'token' },
           { name: 'Contract', value: 'contract' },
           { name: 'Program', value: 'program' },
+          { name: 'Token', value: 'token' },
+          { name: 'Transaction', value: 'transaction' },
+          { name: 'Wallet', value: 'wallet' },
         ],
         displayOptions: { show: { resource: ['blockchain', 'graph'], operation: ['analyze', 'create'] } },
       },
       {
         displayName: 'Address / Transaction / Entity', name: 'value', type: 'string', default: '',
-        required: true, description: 'Blockchain entity value. Expressions like {{$json.address}} are supported.',
+        required: true, description: 'Blockchain entity value. Expressions like {{$JSON.address}} are supported.',
         displayOptions: { show: { resource: ['blockchain', 'graph'], operation: ['analyze', 'create'] } },
       },
       {
@@ -135,7 +135,7 @@ export class SwatNeuralBus implements INodeType {
       },
       {
         displayName: 'Case ID', name: 'caseId', type: 'string', default: '', required: true,
-        description: 'SWAT-... identifier',
+        description: 'SWAT-... identifier.',
         displayOptions: { show: { resource: ['case'] } },
       },
       {
@@ -145,7 +145,7 @@ export class SwatNeuralBus implements INodeType {
       },
       {
         displayName: 'Graph ID', name: 'graphId', type: 'string', default: '', required: true,
-        description: 'GRF-... identifier',
+        description: 'GRF-... identifier.',
         displayOptions: { show: { resource: ['graph'], operation: ['get', 'data', 'share'] } },
       },
       {
@@ -165,11 +165,11 @@ export class SwatNeuralBus implements INodeType {
       {
         displayName: 'Graph Mode', name: 'mode', type: 'options', default: 'fund-flow',
         options: [
+          { name: 'Case', value: 'case' },
+          { name: 'Cluster', value: 'cluster' },
+          { name: 'Contamination', value: 'contamination' },
           { name: 'Fund Flow', value: 'fund-flow' },
           { name: 'Relationships', value: 'relationship' },
-          { name: 'Contamination', value: 'contamination' },
-          { name: 'Cluster', value: 'cluster' },
-          { name: 'Case', value: 'case' },
           { name: 'Token Path', value: 'token-path' },
         ],
         displayOptions: show('graph', 'create'),
@@ -238,8 +238,12 @@ export class SwatNeuralBus implements INodeType {
           method = 'POST';
           const depth = Number(this.getNodeParameter('depth', i));
           const maxNodes = Number(this.getNodeParameter('maxNodes', i));
-          if (!Number.isInteger(depth) || depth < 1 || depth > 4) throw new Error('Depth must be 1–4');
-          if (!Number.isInteger(maxNodes) || maxNodes < 10 || maxNodes > 5000) throw new Error('Maximum Nodes must be 10–5000');
+          if (!Number.isInteger(depth) || depth < 1 || depth > 4) {
+            throw new NodeOperationError(this.getNode(), 'Depth must be 1–4', { itemIndex: i });
+          }
+          if (!Number.isInteger(maxNodes) || maxNodes < 10 || maxNodes > 5000) {
+            throw new NodeOperationError(this.getNode(), 'Maximum Nodes must be 10–5000', { itemIndex: i });
+          }
           body = {
             chain: this.getNodeParameter('chain', i),
             entity_type: this.getNodeParameter('entityType', i),
@@ -263,12 +267,16 @@ export class SwatNeuralBus implements INodeType {
             method = 'POST';
             const ttlMinutes = Number(this.getNodeParameter('ttlMinutes', i));
             if (!Number.isInteger(ttlMinutes) || ttlMinutes < 5 || ttlMinutes > 10080) {
-              throw new Error('TTL must be 5–10080 minutes');
+              throw new NodeOperationError(this.getNode(), 'TTL must be 5–10080 minutes', { itemIndex: i });
             }
             body = { ttl_minutes: ttlMinutes };
           }
         } else {
-          throw new Error(`Unsupported resource/operation combination: ${resource}/${operation}`);
+          throw new NodeOperationError(
+            this.getNode(),
+            `Unsupported resource/operation combination: ${resource}/${operation}`,
+            { itemIndex: i },
+          );
         }
 
         const request: IHttpRequestOptions = {

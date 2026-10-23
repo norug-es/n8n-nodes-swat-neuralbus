@@ -8,6 +8,7 @@ import type {
 export class SwatNeuralBusApi implements ICredentialType {
   name = 'swatNeuralBusApi';
   displayName = 'SWAT NeuralBus API';
+  icon = 'file:../nodes/SwatNeuralBus/swat.svg' as const;
   documentationUrl = 'https://neuralbus.norug.es/connect/';
 
   properties: INodeProperties[] = [
