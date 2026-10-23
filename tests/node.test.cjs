@@ -150,7 +150,7 @@ test('continueOnFail redacts credentials from errors', async () => {
 
 test('package metadata lists node and credential outputs', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
-  assert.equal(pkg.private,true); // staging: publish is intentionally disabled
+  assert.equal(pkg.private,false); // Package publishing is enabled through the tag-only workflow.
   assert.equal(pkg.n8n.nodes.length,1);
   assert.equal(pkg.n8n.credentials.length,1);
   assert.ok(fs.existsSync(path.join(root, 'nodes/SwatNeuralBus/swat.svg')));
