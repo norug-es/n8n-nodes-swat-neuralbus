@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "SWAT NeuralBus blockchain investigations, evidence and forensic graphs for n8n",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "keywords": [
     "n8n-community-node-package",
     "blockchain",
