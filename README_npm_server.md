@@ -6,12 +6,12 @@ An n8n community node for blockchain investigations, case evidence, proof checks
 
 ## Available operations
 
-| Resource | Operations | REST API |
-| --- | --- | --- |
-| Account | Get Profile | `GET /api/v1/product/me` |
-| Blockchain | List Supported Chains, Analyze Entity | `GET /api/v1/chains`, `POST /api/v1/analyze` |
-| Case | Get, Get Evidence, Verify Proof | `GET /api/v1/cases/:id`, `GET /api/v1/cases/:id/evidence`, `GET /api/v1/proof/:id/verify` |
-| Forensic Graph | Create, Get, Get Data, List, Share | `POST/GET /api/v1/graphs`, `GET /api/v1/graphs/:id`, `GET /api/v1/graphs/:id/data`, `POST /api/v1/graphs/:id/share` |
+| Resource       | Operations                            | REST API                                                                                                            |
+| -------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Account        | Get Profile                           | `GET /api/v1/product/me`                                                                                            |
+| Blockchain     | List Supported Chains, Analyze Entity | `GET /api/v1/chains`, `POST /api/v1/analyze`                                                                        |
+| Case           | Get, Get Evidence, Verify Proof       | `GET /api/v1/cases/:id`, `GET /api/v1/cases/:id/evidence`, `GET /api/v1/proof/:id/verify`                           |
+| Forensic Graph | Create, Get, Get Data, List, Share    | `POST/GET /api/v1/graphs`, `GET /api/v1/graphs/:id`, `GET /api/v1/graphs/:id/data`, `POST /api/v1/graphs/:id/share` |
 
 The node uses n8n's encrypted credential store with `X-API-Key`. It accepts a NeuralBus base URL so the same source can be tested against staging. Operation responses preserve native server fields (status, warnings, evidence metadata, etc.) and are not presented as independently validated forensic conclusions.
 
