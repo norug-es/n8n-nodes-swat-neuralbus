@@ -1,4 +1,22 @@
-# SWAT NeuralBus for n8n
+<!-- readme-pro-header:start -->
+<div align="center">
+  <img src="docs/assets/readme-banner.png" alt="SWAT NeuralBus for n8n banner" width="100%">
+  <br>
+  <h1>SWAT NeuralBus for n8n</h1>
+  <strong>SWAT NeuralBus blockchain investigations, evidence and forensic graphs for n8n</strong>
+  <br>
+  <br>
+  <a href="https://github.com/norug-es/n8n-nodes-swat-neuralbus/actions/workflows/ci.yml"><img alt="badge" src="https://img.shields.io/github/actions/workflow/status/norug-es/n8n-nodes-swat-neuralbus/ci.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white&label=build"></a>
+  <img alt="badge" src="https://img.shields.io/badge/version-0.1.0-00B8D9?style=for-the-badge&logo=semanticrelease&logoColor=white">
+  <a href="https://github.com/norug-es/n8n-nodes-swat-neuralbus/blob/main/LICENSE"><img alt="badge" src="https://img.shields.io/badge/license-MIT-22C55E?style=for-the-badge&logo=opensourceinitiative&logoColor=white"></a>
+  <a href="https://nodejs.org/"><img alt="badge" src="https://img.shields.io/badge/node-%3E%3D22.22.0-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"></a>
+  <a href="https://www.typescriptlang.org/"><img alt="badge" src="https://img.shields.io/badge/built%20with-TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"></a>
+  <a href="https://n8n.io/"><img alt="badge" src="https://img.shields.io/badge/automation-n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white"></a>
+  <br><br>
+  <a href="https://neuralbus.norug.es">Website</a> &nbsp;&middot;&nbsp; <a href="https://github.com/norug-es/n8n-nodes-swat-neuralbus/issues">Issues</a> &nbsp;&middot;&nbsp; <a href="https://github.com/norug-es/n8n-nodes-swat-neuralbus">Source</a>
+</div>
+<!-- readme-pro-header:end -->
+
 ### Blockchain Intelligence & Forensic Automation
 
 **Transformamos datos blockchain en inteligencia accionable. Conectamos investigaciones, evidencias y automatización en un único ecosistema.**
